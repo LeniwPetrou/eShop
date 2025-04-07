@@ -1,0 +1,27 @@
+.cart-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+
+  h2 {
+    color: #333;
+    margin-bottom: 2rem;
+  }
+}
+
+.cart-list {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.cart-summary {
+  margin-top: 2rem;
+  text-align: right;
+  padding: 1rem;
+  
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+}

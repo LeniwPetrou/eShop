@@ -1,0 +1,13 @@
+<mat-toolbar class="navbar">
+  <a class="logo">
+    <mat-icon>shopping_basket</mat-icon>
+    eShop
+  </a>
+  <span class="spacer"></span>
+  <nav>
+    <a [routerLink]="item.path" mat-button *ngFor="let item of navItems">
+      <mat-icon>{{item.icon}}</mat-icon>
+      {{item.label}}
+    </a>
+  </nav>
+</mat-toolbar>
