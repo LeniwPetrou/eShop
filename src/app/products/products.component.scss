@@ -11,5 +11,61 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
-  padding: 20px 0;
+  padding: 20px;
+}
+
+.product-card {
+  transition: transform 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  img {
+    height: 200px;
+    object-fit: cover;
+  }
+
+  mat-card-content {
+    padding: 16px;
+    
+    h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    p {
+      color: #FF0000;
+      font-weight: bold;
+      margin: 8px 0 0;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 16px 0;
+
+      .quantity {
+        min-width: 30px;
+        text-align: center;
+        font-size: 1.1rem;
+      }
+    }
+
+    .add-to-cart-btn {
+      width: 100%;
+      margin-top: 8px;
+    }
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
 }
