@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -7,6 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { ProductService } from '../services/product.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Product } from '../models/product.interface';
+import { Store } from '@ngrx/store';
+import * as CartActions from '../store/cart.actions';
+import { OrderItem } from '../store/cart.model';
 
 @Component({
   selector: 'app-products',
@@ -20,15 +23,19 @@ import { Product } from '../models/product.interface';
     MatIconModule
   ],
   providers: [ProductService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent {
   products = signal<Product[]>([]);
   isLoading = signal<boolean>(true);
-  quantities = signal<{ [key: number]: number }>({});
+  quantities = signal<Map<number, number>>(new Map());
+  private store = inject(Store);
 
-  constructor(private productService: ProductService) {
+  constructor(
+    private productService: ProductService
+  ) {
     this.loadProducts();
   }
 
@@ -44,18 +51,31 @@ export class ProductsComponent {
     });
   }
 
-  updateQuantity(productId: number, change: number): void {
-    const currentQuantities = this.quantities();
-    const newQuantity = Math.max(0, (currentQuantities[productId] || 0) + change);
-    this.quantities.set({ ...currentQuantities, [productId]: newQuantity });
+  getQuantity(productId: number): number {
+    return this.quantities().get(productId) || 0;
   }
 
-  addToCart(productId: number): void {
-    const quantity = this.quantities()[productId] || 0;
+  updateQuantity(productId: number, change: number): void {
+    const currentQuantity = this.getQuantity(productId);
+    const newQuantity = Math.max(0, currentQuantity + change);
+    
+    const updatedQuantities = new Map(this.quantities());
+    updatedQuantities.set(productId, newQuantity);
+    this.quantities.set(updatedQuantities);
+  }
+
+  addToCart(product: Product): void {
+    const quantity = this.getQuantity(product.id);
     if (quantity > 0) {
-      console.log(`Added ${quantity} of product ${productId} to cart`);
-      // Reset quantity after adding to cart
-      this.updateQuantity(productId, -quantity);
+      const orderItem: OrderItem = {
+        productId: product.id.toString(),
+        quantity: quantity,
+        price: product.price,
+        img: product.images[0],
+        name: product.title
+      };
+      this.store.dispatch(CartActions.postCart({products: orderItem}));
+      this.updateQuantity(product.id, -quantity);
     }
   }
 }

@@ -1,13 +1,10 @@
 <div class="products-container">
   <h2>Our Products</h2>
-  @if (isLoading()) {
-    <div class="loading-container">
+    <div *ngIf="isLoading()" class="loading-container">
       <mat-spinner></mat-spinner>
     </div>
-  } @else {
     <div class="products-grid">
-      @for (product of products(); track product.id) {
-        <mat-card class="product-card">
+        <mat-card *ngFor="let product of products()" class="product-card">
           <img [src]="product.thumbnail" [alt]="product.title" mat-card-image>
           <mat-card-content>
             <h2>{{product.title}}</h2>
@@ -16,20 +13,18 @@
               <button mat-icon-button (click)="updateQuantity(product.id, -1)">
                 <mat-icon>remove</mat-icon>
               </button>
-              <span class="quantity">{{quantities()[product.id] || 0}}</span>
+              <span class="quantity">{{ getQuantity(product.id) }}</span>
               <button mat-icon-button (click)="updateQuantity(product.id, 1)">
                 <mat-icon>add</mat-icon>
               </button>
             </div>
             <button mat-raised-button color="warn" 
                     class="add-to-cart-btn"
-                    [disabled]="!quantities()[product.id]"
-                    (click)="addToCart(product.id)">
+                    [disabled]="!quantities()"
+                    (click)="addToCart(product)">
               Add to Cart
             </button>
           </mat-card-content>
         </mat-card>
-      }
     </div>
-  }
 </div>
