@@ -16,13 +16,14 @@
               <img [src]="item.img" [alt]="item.name">
               <div class="item-info">
                 <h3>{{item.name}}</h3>
-                <p class="price">{{item.price | currency}}</p>
+                <p class="price">Price: {{item.price | currency}}</p>
                 <p class="quantity">Quantity: {{item.quantity}}</p>
-                <p class="price">Total: {{item.quantity | currency}}</p>
+                <div class="item-actions">
+                  <button mat-button color="warn" (click)="removeFromCart(item)">
+                    <mat-icon>delete</mat-icon> Remove from Cart
+                  </button>
+                </div>
               </div>
-              <!-- <button mat-icon-button color="warn" (click)="removeFromCart(item.id)">
-                <mat-icon>delete</mat-icon>
-              </button> -->
             </div>
           </mat-list-item>
         </mat-list>
@@ -32,9 +33,6 @@
         <div class="total">
           Total: {{(cartTotal$ | async) | currency}}
         </div>
-        <!-- <button mat-raised-button color="primary" [routerLink]="['/checkout']">
-          Proceed to Checkout
-        </button> -->
       </div>
     </div>
   </ng-container>
@@ -43,9 +41,9 @@
     <div class="empty-cart">
       <mat-icon>shopping_cart</mat-icon>
       <p>Your cart is empty</p>
-      <!-- <button mat-raised-button color="primary" routerLink="/products">
+      <button mat-raised-button color="primary" routerLink="/products">
         Continue Shopping
-      </button> -->
+      </button>
     </div>
   </ng-template>
 </div>

@@ -23,3 +23,7 @@ export const getCartFailure = createAction(
     '[Cart] Get Cart failure',
     props<{ error: string }>()
 );
+
+export const updateQuantity = createAction(
+    '[Cart] Update Quantity in Cart'
+);

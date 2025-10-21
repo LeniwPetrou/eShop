@@ -95,11 +95,16 @@
     }
   }
 
-  button {
-    margin-left: 0;
-    flex-shrink: 0;
-    align-self: center; // Change from flex-start to center
+  .item-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
   }
+}
+
+.mat-list-item {
+  height: auto !important;
+  margin-bottom: 1rem;
 }
 
 .item-info {

@@ -43,5 +43,17 @@ export const reducers = createReducer(
   on(CartActions.getCartFailure, (state, action) => ({
     ...state,
     error: action.error,
-  }))
+  })),
+  on(CartActions.updateQuantity, (state, action) => {
+    const products = [...state.products];
+    // const index = products.findIndex(x => x.id === action.product.productId);
+    // products.splice(index, 1);
+    
+    state = {
+      ...state,
+      products: products
+    }
+    return state;
+  }),
+
 );
