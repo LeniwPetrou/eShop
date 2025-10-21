@@ -3,8 +3,16 @@
     <div *ngIf="isLoading()" class="loading-container">
       <mat-spinner></mat-spinner>
     </div>
+    <mat-form-field>
+      <mat-label>Filter by Category</mat-label>
+      <mat-select [value]="selectedCategory()" (selectionChange)="onCategoryChange($event.value)">
+        <mat-option *ngFor="let category of categories()" [value]="category">
+          {{category | titlecase}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <div class="products-grid">
-        <mat-card *ngFor="let product of products()" class="product-card">
+        <mat-card *ngFor="let product of filteredProducts()" class="product-card">
           <img [src]="product.thumbnail" [alt]="product.title" mat-card-image>
           <mat-card-content>
             <h2>{{product.title}}</h2>

@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { ProductService } from '../services/product.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Product } from '../models/product.interface';
@@ -20,7 +21,8 @@ import { OrderItem } from '../store/cart.model';
     HttpClientModule, 
     MatProgressSpinnerModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatSelectModule
   ],
   providers: [ProductService],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,7 +33,16 @@ export class ProductsComponent {
   products = signal<Product[]>([]);
   isLoading = signal<boolean>(true);
   quantities = signal<Map<number, number>>(new Map());
+  categories = signal<string[]>([]);
+  selectedCategory = signal<string>('all');
   private store = inject(Store);
+
+  filteredProducts = computed(() => {
+    const category = this.selectedCategory();
+    return category === 'all' 
+      ? this.products() 
+      : this.products().filter(product => product.category === category);
+  });
 
   constructor(
     private productService: ProductService
@@ -43,12 +54,21 @@ export class ProductsComponent {
     this.productService.getProducts().subscribe({
       next: (response) => {
         this.products.set(response.products);
+        this.categories.set(['all', ...this.extractCategories(response.products)]);
         this.isLoading.set(false);
       },
       error: () => {
         this.isLoading.set(false);
       }
     });
+  }
+
+  private extractCategories(products: Product[]): string[] {
+    return [...new Set(products.map(product => product.category))];
+  }
+
+  onCategoryChange(category: string): void {
+    this.selectedCategory.set(category);
   }
 
   getQuantity(productId: number): number {

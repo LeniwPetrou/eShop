@@ -39,19 +39,14 @@ interface CartState {
 })
 export class CartComponent {
   private productService = inject(ProductService);
-  
   cartItems$: Observable<Order[]>;
+  cartTotal$: Observable<number>;
 
   constructor(private store: Store<AppState>) { 
-    // Debug full state first
-    this.store.subscribe(state => {
-      console.log('Raw state:', state);
-    });
-
-    this.cartItems$ = this.store.select(state => {
-      console.log('State in selector:', state);
-      return state.cart?.products ?? [];
-    });
+    this.cartItems$ = this.store.select(state => state.cart?.products ?? []);
+    this.cartTotal$ = this.cartItems$.pipe(
+      map(items => this.calculateTotal(items))
+    );
     
     this.loadCartItems();
   }
@@ -67,15 +62,21 @@ export class CartComponent {
     });
   }
 
-  updateQuantity(productId: number, quantity: number) {
-    // this.store.dispatch(CartActions.updateQuantity({ productId, quantity }));
+  private calculateTotal(items: Order[]): number {
+    return items.reduce((total, item) => {
+      return total + (item.price * item.quantity);
+    }, 0);
   }
 
-  removeFromCart(productId: number) {
-    // this.store.dispatch(CartActions.removeFromCart({ productId }));
-  }
+  // updateQuantity(productId: number, quantity: number) {
+  //   this.store.dispatch(CartActions.updateQuantity({ productId, quantity }));
+  // }
+
+  // removeFromCart(productId: number) {
+  //   this.store.dispatch(CartActions.removeFromCart({ productId }));
+  // }
 
   clearCart() {
-    // this.store.dispatch(CartActions.clearCart());
+    this.store.dispatch(CartActions.clearCart());
   }
 }
