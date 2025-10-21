@@ -22,7 +22,7 @@ import { OrderItem } from '../store/cart.model';
     MatProgressSpinnerModule,
     MatButtonModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   providers: [ProductService],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -56,6 +56,7 @@ export class ProductsComponent {
         this.products.set(response.products);
         this.categories.set(['all', ...this.extractCategories(response.products)]);
         this.isLoading.set(false);
+        console.log(this.categories());
       },
       error: () => {
         this.isLoading.set(false);
