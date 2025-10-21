@@ -26,9 +26,9 @@
               </button>
             </div>
             <button mat-raised-button color="warn" 
-                    class="add-to-cart-btn"
-                    [disabled]="!quantities()"
-                    (click)="addToCart(product)">
+                class="add-to-cart-btn"
+                [disabled]="!quantities().get(product.id) || quantities().get(product.id) === 0"
+                (click)="addToCart(product)">
               Add to Cart
             </button>
           </mat-card-content>

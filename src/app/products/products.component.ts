@@ -11,6 +11,7 @@ import { Product } from '../models/product.interface';
 import { Store } from '@ngrx/store';
 import * as CartActions from '../store/cart.actions';
 import { OrderItem } from '../store/cart.model';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-products',
@@ -23,6 +24,7 @@ import { OrderItem } from '../store/cart.model';
     MatButtonModule,
     MatIconModule,
     MatSelectModule,
+    MatSnackBarModule
   ],
   providers: [ProductService],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,7 +47,8 @@ export class ProductsComponent {
   });
 
   constructor(
-    private productService: ProductService
+    private productService: ProductService,
+    private snackBar: MatSnackBar
   ) {
     this.loadProducts();
   }
@@ -57,6 +60,7 @@ export class ProductsComponent {
         this.categories.set(['all', ...this.extractCategories(response.products)]);
         this.isLoading.set(false);
         console.log(this.categories());
+        console.log(this.quantities());
       },
       error: () => {
         this.isLoading.set(false);
@@ -98,6 +102,8 @@ export class ProductsComponent {
       };
       this.store.dispatch(CartActions.postCart({products: orderItem}));
       this.updateQuantity(product.id, -quantity);
+      this.snackBar.open(`${product.title} added to cart!`, 'Close', { duration: 2000 });
+
     }
   }
 }

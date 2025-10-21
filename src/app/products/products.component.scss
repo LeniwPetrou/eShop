@@ -43,13 +43,7 @@
 }
 
 .product-card {
-  transition: transform 0.2s ease;
   cursor: pointer;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
-
   img {
     height: 200px;
     object-fit: cover;
@@ -87,6 +81,11 @@
     .add-to-cart-btn {
       width: 100%;
       margin-top: 8px;
+
+      &:disabled {
+        background-color: #ccc !important;
+        color: #666;
+      }
     }
   }
 }
