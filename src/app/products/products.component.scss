@@ -15,11 +15,24 @@
   padding: 10px;
   white-space: nowrap;
   overflow-x: auto;
+  justify-content: flex-end;
   
   mat-form-field {
     min-width: 150px;
     flex: 0 0 auto;
   }
+
+  button {
+    &.selected {
+      background-color: #791a69;
+      color: white;
+    }
+
+    &:not(.selected):hover {
+      background-color: rgba(25, 118, 210, 0.1);
+    }
+  }
+
 }
 
 .products-grid {

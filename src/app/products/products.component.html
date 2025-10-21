@@ -5,7 +5,7 @@
     </div>
     <div class="category-filters-container">
       <ng-container *ngFor="let category of categories()" aria-label="Category Filter">
-        <button mat-button >
+        <button mat-button (click) = "onCategoryChange(category)"  [class.selected]="selectedCategory() === category">
           {{category | titlecase}}
         </button>
       </ng-container>

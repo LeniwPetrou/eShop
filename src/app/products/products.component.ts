@@ -70,6 +70,7 @@ export class ProductsComponent {
 
   onCategoryChange(category: string): void {
     this.selectedCategory.set(category);
+    console.log('Selected category:', category);
   }
 
   getQuantity(productId: number): number {
