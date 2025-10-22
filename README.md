@@ -12,48 +12,42 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
+## Main Page
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+The app has a **welcome page** and a **nav bar created by Angular Material**. The **2 basic pages** are: **Products and Cart** which are being described later. 
 
-```bash
-ng generate component component-name
-```
+![homePage](https://github.com/user-attachments/assets/fc8b506f-948d-4902-a4c5-785a93d4e47c)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-```bash
-ng generate --help
-```
+## Products
 
-## Building
+In Products, user can select the quantity of a product and add it in the cart. There is a list with **all the products by default** and also user can select a specific category. When user selects a **category** then the initial list is being filtered and are being displayed only the **filtered products**. 
 
-To build the project run:
+![products](https://github.com/user-attachments/assets/dd6360e8-3fc8-4300-91eb-ecea01601302)
 
-```bash
-ng build
-```
+When the **quantity** of a product is **0 then the button is disabled**. When user **changes the quantity of a product** then the **button is being enabled**.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+![productsAdd](https://github.com/user-attachments/assets/4244f8ca-32ed-4694-b779-d6e0b3a77501)
 
-## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Cart
 
-```bash
-ng test
-```
+When a user **adds a product** to the cart then the product with **some details are being desplayed in the cart**.
 
-## Running end-to-end tests
+![cart](https://github.com/user-attachments/assets/b4377e05-2d68-4480-8d10-02de0b997d19)
 
-For end-to-end (e2e) testing, run:
+User can **delete a product from the cart**.
+In the end, the **total amount is being calculated**.
 
-```bash
-ng e2e
-```
+When the **cart is empty** then the **related message is being displayed** and the user can continue shopping by pushing the related button!
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+![emptyCart](https://github.com/user-attachments/assets/48da7e00-73ba-40c2-8a95-dd791ee861ef)
 
-## Additional Resources
+## Technologies
+ - Angular
+ - Signals
+ - NgRx
+ - Angular Material 
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
