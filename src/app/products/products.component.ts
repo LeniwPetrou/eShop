@@ -59,8 +59,6 @@ export class ProductsComponent {
         this.products.set(response.products);
         this.categories.set(['all', ...this.extractCategories(response.products)]);
         this.isLoading.set(false);
-        console.log(this.categories());
-        console.log(this.quantities());
       },
       error: () => {
         this.isLoading.set(false);
@@ -74,7 +72,6 @@ export class ProductsComponent {
 
   onCategoryChange(category: string): void {
     this.selectedCategory.set(category);
-    console.log('Selected category:', category);
   }
 
   getQuantity(productId: number): number {

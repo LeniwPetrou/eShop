@@ -1,4 +1,3 @@
-// import { CartState } from './cart.state';
 import { Order } from './cart.model';
 
 export interface CartState {

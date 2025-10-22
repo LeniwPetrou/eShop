@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,21 +9,9 @@ import * as CartActions from '../store/cart.actions';
 import { Observable } from 'rxjs';
 import { ProductService } from '../services/product.service';
 import { map } from 'rxjs/operators';
-import { Order, OrderItem } from '../store/cart.model';
-import { Router } from 'express';
+import { Order } from '../store/cart.model';
 import { RouterModule } from '@angular/router';
-
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  imageUrl: string;
-}
-
-interface CartState {
-  items: CartItem[];
-}
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-cart',
@@ -34,17 +22,17 @@ interface CartState {
     MatButtonModule,
     MatIconModule,
     RouterModule
-    // DecimalPipe
   ],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent {
-  private productService = inject(ProductService);
   cartItems$: Observable<Order[]>;
   cartTotal$: Observable<number>;
 
-  constructor(private store: Store<AppState>) { 
+  constructor(private store: Store<AppState>,
+    private snackBar: MatSnackBar
+  ) { 
     this.cartItems$ = this.store.select(state => state.cart?.products ?? []);
     this.cartTotal$ = this.cartItems$.pipe(
       map(items => this.calculateTotal(items))
@@ -56,10 +44,9 @@ export class CartComponent {
   private loadCartItems() {
     this.cartItems$.subscribe({
       next: (items) => {
-        console.log('Cart Items:', items || []);
       },
       error: (error) => {
-        console.error('Error loading cart items:', error);
+        this.snackBar.open('Failed to load cart items.', 'Close', { duration: 3000 });
       }
     });
   }
@@ -68,10 +55,6 @@ export class CartComponent {
     return items.reduce((total, item) => {
       return total + (item.price * item.quantity);
     }, 0);
-  }
-
-  updateQuantity(productId: number, quantity: number) {
-    // this.store.dispatch(CartActions.updateQuantity({ productId, quantity }));
   }
 
   removeFromCart(product: any) {
